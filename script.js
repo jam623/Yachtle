@@ -770,7 +770,7 @@ function copyShareScore() {
     const shareSummaryText = document.getElementById("shareSummaryText");
     if (!shareSummaryText) return;
 
-    const shareText = `${shareSummaryText.textContent}\nhttps://jam623.github.io/Yachtle/`;
+    const shareText = `${shareSummaryText.textContent}\nhttp://yachtlegame.com/`;
 
     navigator.clipboard.writeText(shareText).then(() => {
         const shareBtn = document.getElementById("shareScoreBtn");
