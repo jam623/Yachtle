@@ -1,0 +1,957 @@
+
+html {
+    font-size: 135%; /* Default is 100%. higher percent equasls more zoomed in */
+}
+
+/* Base Body Font */
+@font-face {
+    font-family: "Aptos";
+    src:
+        url("font/Aptos.woff") format("woff"),
+        url("font/Aptos.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*  Header Font */
+@font-face {
+    font-family: "AptosDisplayBold";
+    src: url("font/Aptos-Display-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* General Page Styling */
+body {
+    font-family: 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    text-align: center;
+    margin: 0;
+    
+    /* Increase padding-top to push everything down */
+    padding: 40px 20px 56px 20px; 
+    
+    background-color: #f2f2f2;
+    color: #000000;
+}
+
+/* Header Title */
+h1 {
+    font-family: "AptosDisplayBold", sans-serif; 
+    font-size: 2.8rem;
+    font-weight: bold;
+    margin: 0 0 36px 0;
+    letter-spacing: -0.5px;
+}
+
+
+.roll-counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: .8rem;
+    font-weight: 400;
+    color: #000000;
+    margin-bottom: 30px;
+}
+
+#rollDots {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 2px;
+}
+
+
+#rollDots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1.5px solid #000000;
+    background-color: transparent; 
+    box-sizing: border-box;
+    transition: background-color 0.15s ease;
+}
+
+/* Filled State */
+#rollDots .dot.active {
+    background-color: #000000; 
+}
+
+/* Dice Area */
+#diceContainer {
+    display: flex;
+    justify-content: center;
+    gap: 18px;            
+    margin-bottom: 32px;  
+}
+
+.die {
+    width: 76px;          
+    height: 76px;         
+    border: 2px solid #000000;
+    border-radius: 16px;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 56px;       
+    cursor: pointer;
+    background: #f2f2f2;
+    transition: transform 0.15s ease, background-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.die:hover {
+    transform: translateY(-2px);
+}
+
+.die.held {
+    border: 3px solid #000000;
+    background-color: #79de9b;
+    box-shadow: inset 0 0 0 1px #000000;
+}
+
+/* GOLD DICE ANIMATION & FLASH  */
+.die.is-yacht {
+    background: linear-gradient(135deg, #ffe033, #f5b000) !important;
+    color: #1a1a1a !important;
+    animation: goldFlash 0.6s ease-out forwards;
+}
+
+@keyframes goldFlash {
+    0% { 
+        transform: scale(1); 
+        filter: brightness(1.4) contrast(1.05); 
+    }
+    50% { 
+        transform: scale(1.15); 
+        filter: brightness(1.25); 
+    }
+    100% { 
+        transform: scale(1); 
+        filter: brightness(1.1); 
+    }
+}
+
+/* SWEEPING SHINE EFFECT ACROSS GOLD DICE */
+.die.is-yacht::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        60deg, 
+        transparent 30%, 
+        rgba(255, 255, 255, 0.8) 50%, 
+        transparent 70%
+    );
+    animation: sweepShine 2.2s infinite;
+}
+
+@keyframes sweepShine {
+    0% { transform: translateX(-100%) rotate(25deg); }
+    100% { transform: translateX(100%) rotate(25deg); }
+}
+
+/* Roll Dice Pill Button */
+#rollButton {
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 14px 38px;
+    cursor: pointer;
+    background-color: #d9d9d9;
+    color: #000000;
+    border: none;
+    border-radius: 25px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-bottom: 38px;
+    font-family: inherit;
+}
+
+#rollButton:hover:not(:disabled) {
+    background-color: #b8b8b8;
+}
+
+#rollButton:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+#rollButton:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+
+.score-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 1.35rem;
+    font-weight: 400;
+    margin-bottom: 28px;
+}
+
+.score-divider {
+    color: #000000;
+    font-weight: 300;
+}
+
+/* Scorecard Table Frame */
+#scorecard {
+    display: inline-flex;
+    flex-direction: column;
+    border: 2px solid #000000;
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #ffffff;
+    width: 260px; 
+}
+
+.scoreButton {
+    display: flex;
+    align-items: stretch; /* Stretches row to fit height completely */
+    width: 100%;
+    padding: 0;           /* Handled by inner spans */
+    font-size: 1rem;
+    font-weight: 400;
+    background: #ffffff;
+    border: none;
+    border-bottom: 2px solid #000000;
+    cursor: pointer;
+    text-align: left;
+    box-sizing: border-box;
+    position: relative;
+    transition: background-color 0.15s ease;
+    font-family: inherit;
+}
+
+#scorecard .scoreButton:last-child {
+    border-bottom: none;
+}
+
+.scoreButton:hover:not(:disabled) {
+    background-color: #f7f7f7;
+}
+
+/* Left Column: Category Name */
+.scoreButton .category-name {
+    flex: 1;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+}
+
+/* Right Column: Score Box with Clean Vertical Border Line */
+.scoreButton .category-score {
+    width: 70px;                  
+    border-left: 2px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    padding: 14px 0;
+    box-sizing: border-box;
+}
+
+.scoreButton:disabled {
+    cursor: default;
+    color: #000000;
+}
+
+
+.scoreButton.wildcard-active::after {
+    content: '🛥️';
+    position: absolute;
+    right: 20px;
+    
+    
+    top: 15%; 
+    
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
+    
+    animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1 forwards;
+}
+
+
+
+
+@keyframes popIn {
+    0% { 
+        transform: scale(0.2); 
+        opacity: 0; 
+    }
+    70% { 
+        transform: scale(1.2); 
+    }
+    100% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+}
+
+
+
+.yacht-banner {
+    position: fixed;
+    top: 35%;
+    left: 50%;
+   
+    font-size: 4rem;
+    font-weight: 1000;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 0 10px #ff8c00;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap; 
+    animation: yachtSlide 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes yachtSlide {
+    0% {
+        transform: translate(-130%, -50%); /* Smooth entry from the left */
+        opacity: 0;
+    }
+    42% {
+        transform: translate(-50%, -50%);  /* Arrive at center */
+        opacity: 1;
+    }
+    58% {
+        transform: translate(-50%, -50%);  /* Hold briefly in center */
+        opacity: 1;
+    }
+    100% {
+        transform: translate(60%, -50%);   /* Smooth exit to the right */
+        opacity: 0;
+    }
+}
+
+.die-svg {
+
+    width: 60%;
+
+    height: 60%;
+
+    pointer-events: none;
+
+    user-select: none;
+
+}
+
+/* Result Box & Confetti */
+#resultBox {
+    width: 150px;
+    margin: 28px auto;
+    padding: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 15px;
+    border: 2px solid #000000;
+    animation: popIn 0.3s ease-out;
+
+    /* Centering Rules */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#resultBox.win { background: #c5e8c5; }
+#resultBox.lose { background: #f3c8c8; }
+.hidden { display: none !important; }
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    70% { transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+#confettiContainer {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    animation: confettiBurst 1.5s ease-out forwards;
+}
+
+@keyframes confettiBurst {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) rotate(720deg); opacity: 0; }
+}
+
+
+
+
+/* NIGHT MODE STYLES */
+body.dark-mode {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Invert standard containers & cards */
+body.dark-mode .container,
+body.dark-mode .scorecard,
+body.dark-mode .die,
+body.dark-mode .modal-content {
+    background-color: #1e1e24 !important;
+    color: #ffffff !important;
+    border-color: #44444c !important;
+}
+
+
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* TOP-RIGHT COMPACT TOGGLE BUTTON */
+.theme-toggle-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.08);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Icon Sizing & Fit */
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+}
+
+/* GENERAL DARK MODE PALETTE */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+/* Toggle Button Appearance in Dark Mode */
+body.dark-mode .theme-toggle-btn {
+    background: rgba(45, 45, 50, 0.85);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/*  LIGHT MODE: DOT STYLES */
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 3px;
+    border-radius: 50%;
+    border: 2px solid #000000;
+    background-color: transparent; /* Empty circle for used rolls */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.dot.active {
+    background-color: #000000; /* Solid black circle for active rolls */
+}
+
+/* DARK MODE: ROLLS REMAINING TEXT */
+body.dark-mode .roll-counter-container {
+    color: #ffffff !important;
+}
+/*  DARK MODE: DOT STYLES */
+body.dark-mode .dot {
+    border-color: #ffffff !important;
+    background-color: transparent !important; /* Hollow white circle for used rolls */
+}
+
+body.dark-mode .dot.active {
+    background-color: #ffffff !important; /* Solid white circle for active rolls */
+}
+
+/* DARK MODE: ALWAYS-WHITE DICE BORDERS */
+body.dark-mode .die,
+body.dark-mode .dice-slot,
+body.dark-mode .die-box,
+body.dark-mode .dice-square {
+    border: 2px solid #ffffff !important; 
+}
+
+/*  DARK MODE: HELD STATE */
+body.dark-mode .die.held,
+body.dark-mode .dice-slot.held,
+body.dark-mode .die-box.held,
+body.dark-mode .dice-square.held {
+    background-color: #42925d !important; /* Green fill */
+    border: 3px solid #ffffff !important;   /* Bold green outline */
+}
+
+/* DARK MODE: ROLL BUTTON */
+body.dark-mode #rollButton,
+body.dark-mode .roll-btn,
+body.dark-mode .roll-button {
+    background-color: #2a2a30 !important;
+    color: #ffffff !important;
+}
+
+/* Hover state in dark mode */
+body.dark-mode #rollButton:hover:not(:disabled),
+body.dark-mode .roll-btn:hover:not(:disabled),
+body.dark-mode .roll-button:hover:not(:disabled) {
+    background-color: rgb(33, 33, 39) !important;
+}
+
+/* Disabled state when rolls reach 0 */
+body.dark-mode #rollButton:disabled,
+body.dark-mode .roll-btn:disabled,
+body.dark-mode .roll-button:disabled {
+    background-color: #1a1a1e !important;
+    color: #666666 !important;
+    cursor: not-allowed;
+}
+
+
+
+#scorecard,
+#scorecard button,
+#scorecard td,
+#scorecard .category-name,
+#scorecard .score-cell {
+    color: #000000 !important;
+}
+
+#scorecard button:link,
+#scorecard button:visited,
+#scorecard button:hover,
+#scorecard button:active {
+    color: #000000 !important;
+}
+
+
+/* DARK MODE: SCORECARD INVERTED COLORS & WHITE BORDERS */
+body.dark-mode #scorecard,
+body.dark-mode #scorecard *,
+body.dark-mode #scorecard .scoreButton {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important; /* Forces all existing table/button lines to solid white */
+}
+
+/* Hover effect on clickable rows */
+body.dark-mode #scorecard .scoreButton:hover:not(:disabled) {
+    background-color: #0d0d0f !important;
+    cursor: pointer;
+}
+
+/* Keep text crisp on hover */
+body.dark-mode #scorecard .scoreButton:hover:not(:disabled) * {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+/* Disabled/Filled rows */
+body.dark-mode #scorecard .scoreButton:disabled {
+    background-color: #1a1a1e !important;
+    color: #888888 !important;
+}
+
+/*  DARK MODE: GLOBAL SCORE DIVIDER */
+body.dark-mode .score-divider {
+    color: #ffffff !important;
+}
+
+/*  DARK MODE: RESULT BOX OVERRIDES */
+body.dark-mode #resultBox,
+body.dark-mode .result-container {
+    color: #000000 !important; 
+}
+
+
+body.dark-mode #resultBox *,
+body.dark-mode .result-container * {
+    color: #000000 !important;
+}
+
+/*  DARK MODE: RESULT BOX SHADES */
+
+/* Win State (Darker Green) */
+body.dark-mode #resultBox.win {
+    background: #67d58c !important; 
+}
+
+/* Lose State (Darker Red) */
+body.dark-mode #resultBox.lose {
+    background: #f89c9c !important; 
+}
+
+
+/* 1. TOP-RIGHT CONTROLS */
+.header-controls {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+}
+
+.header-controls .theme-toggle-btn {
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-controls .theme-icon {
+  width: 22px !important;
+  height: 22px !important;
+  display: block;
+  object-fit: contain;
+}
+
+
+.modal.hidden {
+  display: none !important;
+}
+
+.modal {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999; 
+}
+
+.modal-content {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 380px;
+  width: 85%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .modal-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #333;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: inherit;
+  line-height: 1;
+  padding: 5px 10px;
+}
+
+
+.top-left-controls {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000000; /* Solid black for light mode */
+  z-index: 100;
+}
+
+/* Dark mode styling */
+body.dark-mode .top-left-controls {
+  color: #ffffff; /* White for dark mode */
+}
+
+
+
+
+
+/* complete the challenge of the day popup */
+.completion-actions {
+  margin-top: 20px;
+}
+
+.primary-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primary-btn:hover {
+  background-color: #0056b3;
+}
+
+body.dark-mode .primary-btn {
+  background-color: #0d6efd;
+}
+
+body.dark-mode .primary-btn:hover {
+  background-color: #0b5ed7;
+}
+
+
+.modal-actions {
+  margin-top: 20px;
+}
+
+.primary-btn {
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.primary-btn:hover {
+  opacity: 0.85;
+}
+
+/* Dark mode styling */
+body.dark-mode .primary-btn {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* View Results Pill Button (Base / Light Mode) */
+#viewResultsBtn {
+  display: inline-block;
+  margin: 15px auto 0 auto;
+  padding: 10px 24px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  
+  /* Pill Shape */
+  border-radius: 50px; 
+  
+  /* Outline Style (Light Mode Defaults: Black Border & Text, Transparent Fill) */
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #000000;
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#viewResultsBtn:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect in light mode */
+  transform: translateY(-1px);
+}
+
+/* Dark Mode Overrides */
+
+body.dark-mode #viewResultsBtn,
+.dark-theme #viewResultsBtn {
+  color: #ffffff;
+  border-color: #ffffff;
+  background-color: transparent;
+}
+
+body.dark-mode #viewResultsBtn:hover,
+.dark-theme #viewResultsBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect in dark mode */
+}
+
+/* Ensure the utility class still hides it when active */
+#viewResultsBtn.hidden {
+  display: none !important;
+}
+
+#viewResultsBtn {
+    display: block;
+    margin: 16px auto 0 auto; /* Spacing above, auto margins left/right to center */
+}
+
+
+
+
+#shareSummaryText {
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  
+  /* Centers the text block as a whole inside the modal */
+  display: inline-block; 
+  margin: 15px auto;
+  
+  /* Left-aligns the emojis and text relative to each other */
+  text-align: left; 
+}
+
+.modal-content {
+  text-align: center;
+}
+
+/* Custom Share Score Button Styling (Light Mode: Black fill, white text) */
+#shareScoreBtn {
+  /* Compact sizing */
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  
+  /* Base Light Mode Colors */
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 12px;
+  
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 10px;
+}
+
+/* Light Mode Hover (Subtle dark grey highlight) */
+#shareScoreBtn:hover {
+  background-color: #222222;
+  color: #ffffff;
+  border-color: #222222;
+  transform: translateY(-1px);
+}
+
+/* Dark Mode Overrides (White fill, black text) */
+body.dark-mode #shareScoreBtn,
+.dark-theme #shareScoreBtn {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* Dark Mode Hover (Subtle light grey highlight) */
+body.dark-mode #shareScoreBtn:hover,
+.dark-theme #shareScoreBtn:hover {
+  background-color: #e5e5e5;
+  color: #000000;
+  border-color: #e5e5e5;
+}
+
+
+
+
+
+@media screen and (max-width: 600px) {
+
+  /* 1. Container centered with tight side padding */
+  #diceContainer {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    gap: 8px !important;
+    padding: 0 8px !important; 
+    box-sizing: border-box !important;
+    margin: 15px 0 !important;
+  }
+
+
+  /* 2. Shrink top right icons (Rules, Infinite, Theme) */
+  .header-controls .theme-toggle-btn {
+    width: 28px !important;  /* Container button size */
+    height: 28px !important;
+    padding: 2px !important;
+  }
+
+  .header-controls .theme-icon {
+    width: 18px !important;  /* Inner SVG icons size */
+    height: 18px !important;
+  }
+
+
+/* Pull everything directly underneath the header/title up */
+  h1, #title, header, .header {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 2. Scaled up outer card wrappers */
+  .die {
+    width: 17.5vw !important; 
+    height: 17.5vw !important;
+    max-width: 68px !important; 
+    max-height: 68px !important;
+    aspect-ratio: 1 / 1 !important;
+    
+    padding: 7px !important;   
+    box-sizing: border-box !important;
+    
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 3. Inner SVG Die */
+  .die-svg {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 1px !important;
+    min-height: 1px !important;
+    object-fit: contain !important;
+    display: block !important;
+  }
+
+}

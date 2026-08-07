@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yachtle</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- 1. Load Aptos Web Font via Google-compatible CDN -->
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/aptos">
+
+  
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Yachtle</h1>
+
+    <!--  Result box below the main header -->
+    <div id="resultBox" class="hidden"></div>
+
+    <div id="diceContainer"></div>
+
+    <div class="roll-counter-container">
+        Rolls Remaining: <span id="rollDots">● ● ●</span>
+    </div>
+
+    <div class="header-controls">
+      <button id="rulesToggle" class="theme-toggle-btn" aria-label="Game Rules">
+        <img id="rulesIcon" src="assets/questionblack.svg" alt="Rules" class="theme-icon" />
+      </button>
+      
+      <!-- 1. Infinite Mode Button -->
+      <button id="infiniteToggle" class="theme-toggle-btn" aria-label="Infinite Mode">
+        <img id="infiniteIcon" src="assets/infinitedark.svg" alt="Infinite Mode" class="theme-icon" />
+      </button>
+
+      <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleNightMode()" aria-label="Toggle Night Mode">
+        <img id="themeToggleIcon" src="assets/dark.svg" alt="Theme Toggle" class="theme-icon" />
+      </button>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal hidden">
+      <div class="modal-content">
+        <span id="closeShare" class="close-btn">&times;</span>
+        <h2>Yachtle Complete</h2>
+        <p id="shareSummaryText">You completed today's puzzle!</p>
+        
+        <div class="modal-actions">
+          <button id="shareScoreBtn" class="primary-btn">Share Score 📋</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Markup -->
+    <div id="rulesModal" class="modal hidden">
+      <div class="modal-content">
+        <button id="closeRules" class="close-btn">&times;</button>
+        <h2>How to Play</h2>
+        <p>In Yachtle, yachts are ALWAYS in effect, even if its not a category that day.</p>
+        <p>Roll the dice up to 3 times per turn to score points in different categories.</p>
+        <p>Choose a category on your scorecard to lock in your points for that turn and try to get enough points to match or excede the goal score of the day!</p>
+      </div>
+    </div>
+
+    <!-- Daily Completion Modal -->
+    <div id="completionModal" class="modal hidden">
+      <div class="modal-content">
+        <button id="closeCompletion" class="close-btn">&times;</button>
+        <h2>Puzzle Complete! 🎉</h2>
+        <p id="completionMessage">Great job completing today's daily Yachtle!</p>
+        <div class="completion-actions">
+          <button id="playInfiniteBtn" class="primary-btn">Play Infinite Mode</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-left-controls">
+      <span id="puzzleNumber">#1</span>
+    </div>
+
+    <button id="rollButton">Roll Dice</button>
+
+    <div class="score-summary">
+        <span id="targetScore">Goal: 55+</span>
+        <span class="score-divider">|</span>
+        <span id="currentScore">Your Score: 0</span>
+    </div>
+
+    <div id="scorecard"></div>
+
+    <div id="confettiContainer"></div>
+
+    <!-- View Results button starts hidden -->
+    <button id="viewResultsBtn" class="primary-btn hidden">View Results</button>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
