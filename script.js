@@ -8,12 +8,9 @@ let wildcardActive = false;
 let scorecard = [];
 let isInfiniteMode = false;
 
-
-
 const rollSound1 = new Audio("assets/dice-roll-1.mp3");
 const rollSound2 = new Audio("assets/dice-roll-2.mp3");
 const shakeSound = new Audio("assets/dice-shake.mp3");
-
 
 const diceFaces = [
    "assets/dice1.svg",
@@ -82,9 +79,6 @@ function pickWeightedCategory(pool) {
     return pool.pop();
 }
 
-
-
-
 function getPossibleCategoryScores(category) {
     switch (category) {
         case "Ones": return [0,1,2,3,4,5];
@@ -108,7 +102,6 @@ function getPossibleCategoryScores(category) {
 function getPossibleTotalScores(selectedCategories) {
     let possibleTotals = [0];
     for (let row of selectedCategories) {
-        // Works whether category is passed as a string or an object {category: "Ones"}
         let catName = typeof row === "string" ? row : row.category;
         let categoryScores = getPossibleCategoryScores(catName);
         let newTotals = [];
@@ -119,9 +112,8 @@ function getPossibleTotalScores(selectedCategories) {
         }
         possibleTotals = newTotals;
     }
-    return possibleTotals; 
+    return possibleTotals;
 }
-
 
 function generateDailyChallenge() {
     dailySeedOffset = 0;
@@ -164,7 +156,6 @@ function generateDailyChallenge() {
         }
     }
 
-    // Daily Mode: Pick deterministically using the day's puzzle number
     const puzzleNum = typeof setDailyPuzzleNumber === "function" ? setDailyPuzzleNumber() : 1;
     const targetIndex = (puzzleNum - 1) % weightedScores.length;
     targetScore = weightedScores[targetIndex];
@@ -174,6 +165,7 @@ function generateDailyChallenge() {
         targetScoreEl.textContent = "Goal: " + targetScore + "+";
     }
 }
+
 // --- STORAGE & STATE FUNCTIONS ---
 
 function getTodayStorageKey() {
@@ -184,8 +176,37 @@ function getTodayStorageKey() {
     return `yachtle_daily_${year}-${month}-${day}`;
 }
 
+function saveActiveDailyState() {
+    if (isInfiniteMode) return;
+    try {
+        const key = getTodayStorageKey() + "_active";
+        const dataToSave = {
+            dice: dice,
+            held: held,
+            rollsRemaining: rollsRemaining,
+            scorecard: scorecard,
+            totalScore: totalScore,
+            targetScore: targetScore,
+            yachtScored: yachtScored
+        };
+        localStorage.setItem(key, JSON.stringify(dataToSave));
+    } catch (e) {
+        console.error("Failed to save active state:", e);
+    }
+}
+
+function clearActiveDailyState() {
+    try {
+        const key = getTodayStorageKey() + "_active";
+        localStorage.removeItem(key);
+    } catch (e) {
+        console.error("Failed to clear active state:", e);
+    }
+}
+
 function saveCompletedState() {
     try {
+        clearActiveDailyState();
         const key = getTodayStorageKey();
         const dataToSave = {
             scorecard: scorecard,
@@ -203,6 +224,7 @@ function loadDailyState() {
     const todayKey = getTodayStorageKey();
     const savedData = localStorage.getItem(todayKey);
    
+    // 1. Check if completed
     if (savedData) {
         try {
             const parsed = JSON.parse(savedData);
@@ -224,9 +246,39 @@ function loadDailyState() {
                 return true;
             }
         } catch (e) {
-            console.error("Error loading saved daily state:", e);
+            console.error("Error loading completed state:", e);
         }
     }
+
+    // 2. Check for mid-game active state
+    const activeKey = todayKey + "_active";
+    const activeData = localStorage.getItem(activeKey);
+    if (activeData) {
+        try {
+            const parsed = JSON.parse(activeData);
+            if (parsed) {
+                if (Array.isArray(parsed.dice)) dice = parsed.dice;
+                if (Array.isArray(parsed.held)) held = parsed.held;
+                if (typeof parsed.rollsRemaining !== "undefined") rollsRemaining = parsed.rollsRemaining;
+                if (Array.isArray(parsed.scorecard)) scorecard = parsed.scorecard;
+                if (typeof parsed.totalScore !== "undefined") totalScore = parsed.totalScore;
+                if (parsed.targetScore) targetScore = parsed.targetScore;
+                if (typeof parsed.yachtScored !== "undefined") yachtScored = parsed.yachtScored;
+
+                const targetScoreEl = document.getElementById("targetScore");
+                if (targetScoreEl && targetScore) targetScoreEl.textContent = `Goal: ${targetScore}+`;
+
+                updateTotalScore();
+                updateRollCounter();
+                displayDice();
+                displayScorecard();
+                return true;
+            }
+        } catch (e) {
+            console.error("Error loading active state:", e);
+        }
+    }
+
     return false;
 }
 
@@ -248,7 +300,6 @@ function triggerYachtBanner() {
 function rollDice() {
     if (rollsRemaining <= 0) return;
 
-    // --- PLAY SHAKE SOUND WHEN SHUFFLE STARTS ---
     shakeSound.currentTime = 0;
     shakeSound.play();
 
@@ -274,7 +325,11 @@ function rollDice() {
         displayDice();
         displayScorecard();
 
-        // --- PLAY LANDING SOUND WHEN SHUFFLE STOPS ---
+        // Save active state immediately after rolls are assigned
+        if (!isInfiniteMode) {
+            saveActiveDailyState();
+        }
+
         const chosenSound = Math.random() < 0.5 ? rollSound1 : rollSound2;
         chosenSound.currentTime = 0;
         chosenSound.play();
@@ -349,6 +404,11 @@ function displayDice() {
                 held[i] = !held[i];
                 if (held[i]) die.classList.add("held");
                 else die.classList.remove("held");
+
+                // Save held status changes mid-turn
+                if (!isInfiniteMode) {
+                    saveActiveDailyState();
+                }
             }
         });
 
@@ -412,6 +472,11 @@ function displayScorecard() {
                 updateTotalScore();
                 resetTurn();
                 displayScorecard();
+
+                if (!isInfiniteMode) {
+                    saveActiveDailyState();
+                }
+
                 checkGameEnd();
             }
         });
@@ -538,7 +603,6 @@ function startInfiniteChallenge() {
     displayScorecard();
 }
 
-// Helper for weighted picking in Infinite Mode (uses standard Math.random)
 function pickWeightedCategoryInfinite(pool) {
     let totalWeight = 0;
     for (let category of pool) {
@@ -564,7 +628,6 @@ function generateInfiniteChallenge() {
     const eliteCategories = ["Yacht", "Large Straight", "Four of a Kind"];
 
     while (scorecard.length < 3) {
-        // Use weighted picking instead of unweighted Math.random splice
         const chosen = pickWeightedCategoryInfinite(pool);
         const isElite = eliteCategories.includes(chosen.name);
 
@@ -608,31 +671,26 @@ function generateInfiniteChallenge() {
 }
 
 function returnToDailyMode() {
-    if (!isInfiniteMode) return; // Only run if actually coming back from Infinite Mode
-    
+    if (!isInfiniteMode) return;
+   
     isInfiniteMode = false;
     setDailyPuzzleNumber();
-    
+   
     const resultBox = document.getElementById("resultBox");
     if (resultBox) resultBox.classList.add("hidden");
 
-    // 1. Check if today's daily puzzle was completed earlier today
-    const isAlreadyCompleted = loadDailyState(); 
+    const isAlreadyCompleted = loadDailyState();
 
     if (isAlreadyCompleted) {
-        // If completed, loadDailyState() restored the finished scorecard UI
         updateTotalScore();
         displayScorecard();
     } else {
-        // 2. If NOT completed, FORCE a clean generation of today's seeded daily puzzle
         generateDailyChallenge();
         resetTurn();
         updateTotalScore();
         displayScorecard();
     }
 }
-
-
 
 function checkGameEnd() {
     const isFinished = scorecard.length > 0 && scorecard.every(row => row.filled || row.scored || row.score !== null);
@@ -642,7 +700,6 @@ function checkGameEnd() {
             saveCompletedState();
         }
 
-        // Google Analytics: daily challenge completed
         if (!isInfiniteMode && typeof gtag === "function") {
             gtag('event', 'challenge_complete', {
                 challenge_date: new Date().toISOString().split('T')[0],
@@ -746,9 +803,9 @@ function generateEmojiSummary() {
 
 function launchConfetti() {
     const container = document.getElementById("confettiContainer") || document.body;
-    const resultBox = document.getElementById("resultBox") || 
-                      document.getElementById("resultsModal") || 
-                      document.getElementById("victoryModal") || 
+    const resultBox = document.getElementById("resultBox") ||
+                      document.getElementById("resultsModal") ||
+                      document.getElementById("victoryModal") ||
                       document.getElementById("gameCompleteModal");
 
     let startX = window.innerWidth / 2;
@@ -791,8 +848,6 @@ function copyShareScore() {
     const shareText = `${shareSummaryText.textContent}\nhttp://yachtlegame.com/`;
 
     navigator.clipboard.writeText(shareText).then(() => {
-
-        // Google Analytics: score copied
         if (typeof gtag === "function") {
             gtag('event', 'score_copied', {
                 challenge_date: new Date().toISOString().split('T')[0]
@@ -810,15 +865,12 @@ function copyShareScore() {
 }
 
 function setDailyPuzzleNumber() {
-    // 1. Create start date using year, month (0-indexed: 7 = August), day
-    const startDate = new Date(2026, 7, 1); 
+    const startDate = new Date(2026, 7, 1);
     const today = new Date();
 
-    
     const startMidnight = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
     const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-   
     const diffTime = todayMidnight - startMidnight;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
@@ -866,9 +918,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setDailyPuzzleNumber();
 
-    const isAlreadyCompleted = loadDailyState();
+    const isAlreadyCompletedOrActive = loadDailyState();
 
-    if (!isAlreadyCompleted) {
+    if (!isAlreadyCompletedOrActive) {
         generateDailyChallenge();
         updateRollCounter();
         displayDice();
@@ -892,10 +944,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const viewResultsBtn = document.getElementById("viewResultsBtn");
 
     document.addEventListener("click", function (e) {
-        // Handles header button (#infiniteToggle), modal button (#playInfiniteBtn), and icon (#infiniteIcon)
         if (
-            e.target.closest("#infiniteToggle") || 
-            e.target.closest("#playInfiniteBtn") || 
+            e.target.closest("#infiniteToggle") ||
+            e.target.closest("#playInfiniteBtn") ||
             e.target.closest("#infiniteIcon")
         ) {
             if (completionModal) completionModal.classList.add("hidden");
@@ -968,7 +1019,6 @@ function generateBalancedTargetScore(scorecardRows) {
         }
     }
 
-    
     let randomIndex = Math.floor(Math.random() * weightedScores.length);
     return weightedScores[randomIndex];
 }
