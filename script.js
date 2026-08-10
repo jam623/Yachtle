@@ -633,6 +633,16 @@ function checkGameEnd() {
         if (!isInfiniteMode && typeof saveCompletedState === "function") {
             saveCompletedState();
         }
+
+        // Google Analytics: daily challenge completed
+        if (!isInfiniteMode && typeof gtag === "function") {
+            gtag('event', 'challenge_complete', {
+                challenge_date: new Date().toISOString().split('T')[0],
+                score: totalScore,
+                won: totalScore >= targetScore
+            });
+        }
+
         lockGameBoard();
         triggerGameCompletionSequence();
     }
@@ -773,6 +783,14 @@ function copyShareScore() {
     const shareText = `${shareSummaryText.textContent}\nhttp://yachtlegame.com/`;
 
     navigator.clipboard.writeText(shareText).then(() => {
+
+        // Google Analytics: score copied
+        if (typeof gtag === "function") {
+            gtag('event', 'score_copied', {
+                challenge_date: new Date().toISOString().split('T')[0]
+            });
+        }
+
         const shareBtn = document.getElementById("shareScoreBtn");
         if (shareBtn) {
             shareBtn.textContent = "Copied to Clipboard!";
