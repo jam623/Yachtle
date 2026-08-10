@@ -124,6 +124,7 @@ function getPossibleTotalScores(selectedCategories) {
 
 
 function generateDailyChallenge() {
+    dailySeedOffset = 0;
     scorecard = [];
     let pool = [...categories];
     let eliteCount = 0;
@@ -607,24 +608,31 @@ function generateInfiniteChallenge() {
 }
 
 function returnToDailyMode() {
-    if (isInfiniteMode) {
-        isInfiniteMode = false;
-        setDailyPuzzleNumber();
-        
-        const resultBox = document.getElementById("resultBox");
-        if (resultBox) resultBox.classList.add("hidden");
+    if (!isInfiniteMode) return; // Only run if actually coming back from Infinite Mode
+    
+    isInfiniteMode = false;
+    setDailyPuzzleNumber();
+    
+    const resultBox = document.getElementById("resultBox");
+    if (resultBox) resultBox.classList.add("hidden");
 
-        const isAlreadyCompleted = loadDailyState();
-        if (!isAlreadyCompleted) {
-            generateDailyChallenge();
-            resetTurn();
-            updateTotalScore();
-            displayScorecard();
-        }
+    // 1. Check if today's daily puzzle was completed earlier today
+    const isAlreadyCompleted = loadDailyState(); 
+
+    if (isAlreadyCompleted) {
+        // If completed, loadDailyState() restored the finished scorecard UI
+        updateTotalScore();
+        displayScorecard();
+    } else {
+        // 2. If NOT completed, FORCE a clean generation of today's seeded daily puzzle
+        generateDailyChallenge();
+        resetTurn();
+        updateTotalScore();
+        displayScorecard();
     }
 }
 
-// --- WIN & MODAL SEQUENCING ---
+
 
 function checkGameEnd() {
     const isFinished = scorecard.length > 0 && scorecard.every(row => row.filled || row.scored || row.score !== null);
