@@ -1,7 +1,7 @@
-
 html {
-    font-size: 135%; 
+    font-size: 135%;
 }
+
 
 /* Base Body Font */
 @font-face {
@@ -13,6 +13,7 @@ html {
     font-style: normal;
 }
 
+
 /*  Header Font */
 @font-face {
     font-family: "AptosDisplayBold";
@@ -22,26 +23,31 @@ html {
 }
 
 
+
+
 body {
     font-family: 'Aptos', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     text-align: center;
     margin: 0;
-    
+   
     /* Increase padding-top to push everything down */
-    padding: 40px 20px 56px 20px; 
-    
+    padding: 40px 20px 56px 20px;
+   
     background-color: #f2f2f2;
     color: #000000;
 }
 
+
 /* Header Title */
 h1 {
-    font-family: "AptosDisplayBold", sans-serif; 
+    font-family: "AptosDisplayBold", sans-serif;
     font-size: 2.8rem;
     font-weight: bold;
     margin: 0 0 36px 0;
     letter-spacing: -0.5px;
 }
+
+
 
 
 .roll-counter-container {
@@ -55,6 +61,7 @@ h1 {
     margin-bottom: 30px;
 }
 
+
 #rollDots {
     display: inline-flex;
     align-items: center;
@@ -63,20 +70,24 @@ h1 {
 }
 
 
+
+
 #rollDots .dot {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     border: 1.5px solid #000000;
-    background-color: transparent; 
+    background-color: transparent;
     box-sizing: border-box;
     transition: background-color 0.15s ease;
 }
 
+
 /* Filled State */
 #rollDots .dot.active {
-    background-color: #000000; 
+    background-color: #000000;
 }
+
 
 /* Dice Area */
 #diceContainer {
@@ -86,15 +97,16 @@ h1 {
     margin-bottom: 32px;  
 }
 
+
 .die {
     width: 76px;          
-    height: 76px;         
+    height: 76px;        
     border: 2px solid #000000;
     border-radius: 16px;  
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 56px;       
+    font-size: 56px;      
     cursor: pointer;
     background: #f2f2f2;
     transition: transform 0.15s ease, background-color 0.2s ease;
@@ -103,15 +115,18 @@ h1 {
     user-select: none;
 }
 
+
 .die:hover {
     transform: translateY(-2px);
 }
+
 
 .die.held {
     border: 3px solid #000000;
     background-color: #79de9b;
     box-shadow: inset 0 0 0 1px #000000;
 }
+
 
 /* GOLD DICE ANIMATION & FLASH  */
 .die.is-yacht {
@@ -120,20 +135,22 @@ h1 {
     animation: goldFlash 0.6s ease-out forwards;
 }
 
+
 @keyframes goldFlash {
-    0% { 
-        transform: scale(1); 
-        filter: brightness(1.4) contrast(1.05); 
+    0% {
+        transform: scale(1);
+        filter: brightness(1.4) contrast(1.05);
     }
-    50% { 
-        transform: scale(1.15); 
-        filter: brightness(1.25); 
+    50% {
+        transform: scale(1.15);
+        filter: brightness(1.25);
     }
-    100% { 
-        transform: scale(1); 
-        filter: brightness(1.1); 
+    100% {
+        transform: scale(1);
+        filter: brightness(1.1);
     }
 }
+
 
 /* SWEEPING SHINE EFFECT ACROSS GOLD DICE */
 .die.is-yacht::after {
@@ -144,18 +161,20 @@ h1 {
     width: 200%;
     height: 200%;
     background: linear-gradient(
-        60deg, 
-        transparent 30%, 
-        rgba(255, 255, 255, 0.8) 50%, 
+        60deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.8) 50%,
         transparent 70%
     );
     animation: sweepShine 2.2s infinite;
 }
 
+
 @keyframes sweepShine {
     0% { transform: translateX(-100%) rotate(25deg); }
     100% { transform: translateX(100%) rotate(25deg); }
 }
+
 
 /* Roll Dice Pill Button */
 #rollButton {
@@ -172,18 +191,23 @@ h1 {
     font-family: inherit;
 }
 
+
 #rollButton:hover:not(:disabled) {
     background-color: #b8b8b8;
 }
+
 
 #rollButton:active:not(:disabled) {
     transform: scale(0.98);
 }
 
+
 #rollButton:disabled {
     cursor: default;
     opacity: 0.5;
 }
+
+
 
 
 .score-summary {
@@ -196,10 +220,12 @@ h1 {
     margin-bottom: 28px;
 }
 
+
 .score-divider {
     color: #000000;
     font-weight: 300;
 }
+
 
 /* Scorecard Table Frame */
 #scorecard {
@@ -209,8 +235,9 @@ h1 {
     border-radius: 14px;
     overflow: hidden;
     background-color: #ffffff;
-    width: 260px; 
+    width: 260px;
 }
+
 
 .scoreButton {
     display: flex;
@@ -230,13 +257,16 @@ h1 {
     font-family: inherit;
 }
 
+
 #scorecard .scoreButton:last-child {
     border-bottom: none;
 }
 
+
 .scoreButton:hover:not(:disabled) {
     background-color: #f7f7f7;
 }
+
 
 /* Left Column: Category Name */
 .scoreButton .category-name {
@@ -245,6 +275,7 @@ h1 {
     display: flex;
     align-items: center;
 }
+
 
 /* Right Column: Score Box with Clean Vertical Border Line */
 .scoreButton .category-score {
@@ -258,42 +289,52 @@ h1 {
     box-sizing: border-box;
 }
 
+
 .scoreButton:disabled {
     cursor: default;
     color: #000000;
 }
 
 
+
+
 .scoreButton.wildcard-active::after {
     content: '🛥️';
     position: absolute;
     right: 20px;
-    
-    
-    top: 15%; 
-    
+   
+   
+    top: 15%;
+   
     font-size: 1.1rem;
     filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
-    
+   
     animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1 forwards;
 }
 
 
 
 
+
+
+
+
 @keyframes popIn {
-    0% { 
-        transform: scale(0.2); 
-        opacity: 0; 
+    0% {
+        transform: scale(0.2);
+        opacity: 0;
     }
-    70% { 
-        transform: scale(1.2); 
+    70% {
+        transform: scale(1.2);
     }
-    100% { 
-        transform: scale(1); 
-        opacity: 1; 
+    100% {
+        transform: scale(1);
+        opacity: 1;
     }
 }
+
+
+
 
 
 
@@ -308,9 +349,10 @@ h1 {
     text-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 0 10px #ff8c00;
     pointer-events: none;
     z-index: 1000;
-    white-space: nowrap; 
+    white-space: nowrap;
     animation: yachtSlide 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
+
 
 @keyframes yachtSlide {
     0% {
@@ -331,17 +373,24 @@ h1 {
     }
 }
 
+
 .die-svg {
+
 
     width: 60%;
 
+
     height: 60%;
+
 
     pointer-events: none;
 
+
     user-select: none;
 
+
 }
+
 
 /* Result Box & Confetti */
 #resultBox {
@@ -354,6 +403,7 @@ h1 {
     border: 2px solid #000000;
     animation: popIn 0.3s ease-out;
 
+
     /* Centering Rules */
     display: flex;
     justify-content: center;
@@ -361,9 +411,11 @@ h1 {
     text-align: center;
 }
 
+
 #resultBox.win { background: #c5e8c5; }
 #resultBox.lose { background: #f3c8c8; }
 .hidden { display: none !important; }
+
 
 @keyframes popIn {
     0% { opacity: 0; transform: scale(0.5); }
@@ -371,20 +423,23 @@ h1 {
     100% { opacity: 1; transform: scale(1); }
 }
 
+
 #confettiContainer {
     position: fixed;
-    top: 0; 
+    top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     pointer-events: none;
     overflow: hidden;
 }
 
+
 .confetti {
     position: absolute;
     animation: confettiBurst 1.5s ease-out forwards;
 }
+
 
 @keyframes confettiBurst {
     0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
@@ -394,11 +449,16 @@ h1 {
 
 
 
+
+
+
+
 /* NIGHT MODE STYLES */
 body.dark-mode {
     background-color: #121212 !important;
     color: #e0e0e0 !important;
 }
+
 
 /* Invert standard containers & cards */
 body.dark-mode .container,
@@ -411,9 +471,12 @@ body.dark-mode .modal-content {
 }
 
 
+
+
 body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 
 /* TOP-RIGHT COMPACT TOGGLE BUTTON */
 .theme-toggle-btn {
@@ -421,11 +484,11 @@ body {
     top: 16px;
     right: 16px;
     z-index: 1000;
-    
+   
     width: 36px;
     height: 36px;
     padding: 0;
-    
+   
     display: flex;
     align-items: center;
     justify-content: center;
@@ -438,13 +501,16 @@ body {
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+
 .theme-toggle-btn:hover {
     transform: scale(1.08);
 }
 
+
 .theme-toggle-btn:active {
     transform: scale(0.95);
 }
+
 
 /* Icon Sizing & Fit */
 .theme-icon {
@@ -455,15 +521,18 @@ body {
     pointer-events: none;
 }
 
+
 /* GENERAL DARK MODE PALETTE */
 body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+
 body.dark-mode {
     background-color: #121212 !important;
     color: #ffffff !important;
 }
+
 
 /* Toggle Button Appearance in Dark Mode */
 body.dark-mode .theme-toggle-btn {
@@ -471,6 +540,7 @@ body.dark-mode .theme-toggle-btn {
     border-color: rgba(255, 255, 255, 0.15);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
+
 
 /*  LIGHT MODE: DOT STYLES */
 .dot {
@@ -484,9 +554,11 @@ body.dark-mode .theme-toggle-btn {
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
+
 .dot.active {
     background-color: #000000; /* Solid black circle for active rolls */
 }
+
 
 /* DARK MODE: ROLLS REMAINING TEXT */
 body.dark-mode .roll-counter-container {
@@ -498,17 +570,20 @@ body.dark-mode .dot {
     background-color: transparent !important; /* Hollow white circle for used rolls */
 }
 
+
 body.dark-mode .dot.active {
     background-color: #ffffff !important; /* Solid white circle for active rolls */
 }
+
 
 /* DARK MODE: ALWAYS-WHITE DICE BORDERS */
 body.dark-mode .die,
 body.dark-mode .dice-slot,
 body.dark-mode .die-box,
 body.dark-mode .dice-square {
-    border: 2px solid #ffffff !important; 
+    border: 2px solid #ffffff !important;
 }
+
 
 /*  DARK MODE: HELD STATE */
 body.dark-mode .die.held,
@@ -519,6 +594,7 @@ body.dark-mode .dice-square.held {
     border: 3px solid #ffffff !important;   /* Bold green outline */
 }
 
+
 /* DARK MODE: ROLL BUTTON */
 body.dark-mode #rollButton,
 body.dark-mode .roll-btn,
@@ -528,12 +604,15 @@ body.dark-mode .roll-button {
 }
 
 
+
+
 /* Hover state in dark mode */
 body.dark-mode #rollButton:hover:not(:disabled),
 body.dark-mode .roll-btn:hover:not(:disabled),
 body.dark-mode .roll-button:hover:not(:disabled) {
     background-color: rgb(33, 33, 39) !important;
 }
+
 
 /* Disabled state when rolls reach 0 */
 body.dark-mode #rollButton:disabled,
@@ -546,6 +625,9 @@ body.dark-mode .roll-button:disabled {
 
 
 
+
+
+
 #scorecard,
 #scorecard button,
 #scorecard td,
@@ -554,12 +636,15 @@ body.dark-mode .roll-button:disabled {
     color: #000000 !important;
 }
 
+
 #scorecard button:link,
 #scorecard button:visited,
 #scorecard button:hover,
 #scorecard button:active {
     color: #000000 !important;
 }
+
+
 
 
 /* DARK MODE: SCORECARD INVERTED COLORS & WHITE BORDERS */
@@ -571,11 +656,13 @@ body.dark-mode #scorecard .scoreButton {
     border-color: #ffffff !important; /* Forces all existing table/button lines to solid white */
 }
 
+
 /* Hover effect on clickable rows */
 body.dark-mode #scorecard .scoreButton:hover:not(:disabled) {
     background-color: #0d0d0f !important;
     cursor: pointer;
 }
+
 
 /* Keep text crisp on hover */
 body.dark-mode #scorecard .scoreButton:hover:not(:disabled) * {
@@ -583,22 +670,27 @@ body.dark-mode #scorecard .scoreButton:hover:not(:disabled) * {
     color: #ffffff !important;
 }
 
+
 /* Disabled/Filled rows */
 body.dark-mode #scorecard .scoreButton:disabled {
     background-color: #1a1a1e !important;
     color: #888888 !important;
 }
 
+
 /*  DARK MODE: GLOBAL SCORE DIVIDER */
 body.dark-mode .score-divider {
     color: #ffffff !important;
 }
 
+
 /*  DARK MODE: RESULT BOX OVERRIDES */
 body.dark-mode #resultBox,
 body.dark-mode .result-container {
-    color: #000000 !important; 
+    color: #000000 !important;
 }
+
+
 
 
 body.dark-mode #resultBox *,
@@ -606,17 +698,22 @@ body.dark-mode .result-container * {
     color: #000000 !important;
 }
 
+
 /*  DARK MODE: RESULT BOX SHADES */
+
 
 /* Win State (Darker Green) */
 body.dark-mode #resultBox.win {
-    background: #67d58c !important; 
+    background: #67d58c !important;
 }
+
 
 /* Lose State (Darker Red) */
 body.dark-mode #resultBox.lose {
-    background: #f89c9c !important; 
+    background: #f89c9c !important;
 }
+
+
 
 
 /* 1. TOP-RIGHT CONTROLS */
@@ -629,6 +726,7 @@ body.dark-mode #resultBox.lose {
   gap: 12px;
   z-index: 100;
 }
+
 
 .header-controls .theme-toggle-btn {
   position: static !important;
@@ -643,6 +741,7 @@ body.dark-mode #resultBox.lose {
   justify-content: center;
 }
 
+
 .header-controls .theme-icon {
   width: 22px !important;
   height: 22px !important;
@@ -651,9 +750,12 @@ body.dark-mode #resultBox.lose {
 }
 
 
+
+
 .modal.hidden {
   display: none !important;
 }
+
 
 .modal {
   position: fixed !important;
@@ -665,8 +767,9 @@ body.dark-mode #resultBox.lose {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99999; 
+  z-index: 99999;
 }
+
 
 .modal-content {
   background-color: #ffffff;
@@ -680,11 +783,13 @@ body.dark-mode #resultBox.lose {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
+
 body.dark-mode .modal-content {
   background-color: #1e1e1e;
   color: #ffffff;
   border: 1px solid #333;
 }
+
 
 .close-btn {
   position: absolute;
@@ -701,6 +806,8 @@ body.dark-mode .modal-content {
 }
 
 
+
+
 .top-left-controls {
   position: absolute;
   top: 15px;
@@ -711,6 +818,7 @@ body.dark-mode .modal-content {
   z-index: 100;
 }
 
+
 /* Dark mode styling */
 body.dark-mode .top-left-controls {
   color: #ffffff; /* White for dark mode */
@@ -720,10 +828,16 @@ body.dark-mode .top-left-controls {
 
 
 
+
+
+
+
+
 /* complete the challenge of the day popup */
 .completion-actions {
   margin-top: 20px;
 }
+
 
 .primary-btn {
   background-color: #007bff;
@@ -737,22 +851,28 @@ body.dark-mode .top-left-controls {
   transition: background-color 0.2s ease;
 }
 
+
 .primary-btn:hover {
   background-color: #0056b3;
 }
 
+
 body.dark-mode .primary-btn {
   background-color: #0d6efd;
 }
+
 
 body.dark-mode .primary-btn:hover {
   background-color: #0b5ed7;
 }
 
 
+
+
 .modal-actions {
   margin-top: 20px;
 }
+
 
 .primary-btn {
   background-color: #000000;
@@ -766,15 +886,18 @@ body.dark-mode .primary-btn:hover {
   transition: opacity 0.2s ease;
 }
 
+
 .primary-btn:hover {
   opacity: 0.85;
 }
+
 
 /* Dark mode styling */
 body.dark-mode .primary-btn {
   background-color: #ffffff;
   color: #000000;
 }
+
 
 /* View Results Pill Button (Base / Light Mode) */
 #viewResultsBtn {
@@ -784,25 +907,28 @@ body.dark-mode .primary-btn {
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 500;
-  
+ 
   /* Pill Shape */
-  border-radius: 50px; 
-  
+  border-radius: 50px;
+ 
   /* Outline Style (Light Mode Defaults: Black Border & Text, Transparent Fill) */
   background-color: transparent;
   color: #000000;
   border: 1px solid #000000;
-  
+ 
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 
 #viewResultsBtn:hover {
   background-color: rgba(0, 0, 0, 0.05); /* Subtle hover effect in light mode */
   transform: translateY(-1px);
 }
 
+
 /* Dark Mode Overrides */
+
 
 body.dark-mode #viewResultsBtn,
 .dark-theme #viewResultsBtn {
@@ -811,15 +937,18 @@ body.dark-mode #viewResultsBtn,
   background-color: transparent;
 }
 
+
 body.dark-mode #viewResultsBtn:hover,
 .dark-theme #viewResultsBtn:hover {
   background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect in dark mode */
 }
 
+
 /* Ensure the utility class still hides it when active */
 #viewResultsBtn.hidden {
   display: none !important;
 }
+
 
 #viewResultsBtn {
     display: block;
@@ -829,23 +958,29 @@ body.dark-mode #viewResultsBtn:hover,
 
 
 
+
+
+
+
 #shareSummaryText {
   white-space: pre-wrap;
   font-family: inherit;
   font-size: 1.1rem;
   line-height: 1.8;
-  
+ 
   /* Centers the text block as a whole inside the modal */
-  display: inline-block; 
+  display: inline-block;
   margin: 15px auto;
-  
+ 
   /* Left-aligns the emojis and text relative to each other */
-  text-align: left; 
+  text-align: left;
 }
+
 
 .modal-content {
   text-align: center;
 }
+
 
 /* Custom Share Score Button Styling (Light Mode: Black fill, white text) */
 #shareScoreBtn {
@@ -853,17 +988,18 @@ body.dark-mode #viewResultsBtn:hover,
   padding: 10px 20px;
   font-size: 0.95rem;
   font-weight: 600;
-  
+ 
   /* Base Light Mode Colors */
   background-color: #000000;
   color: #ffffff;
   border: 1px solid #000000;
   border-radius: 12px;
-  
+ 
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
   margin-top: 10px;
 }
+
 
 /* Light Mode Hover (Subtle dark grey highlight) */
 #shareScoreBtn:hover {
@@ -873,6 +1009,7 @@ body.dark-mode #viewResultsBtn:hover,
   transform: translateY(-1px);
 }
 
+
 /* Dark Mode Overrides (White fill, black text) */
 body.dark-mode #shareScoreBtn,
 .dark-theme #shareScoreBtn {
@@ -880,6 +1017,7 @@ body.dark-mode #shareScoreBtn,
   color: #000000;
   border-color: #ffffff;
 }
+
 
 /* Dark Mode Hover (Subtle light grey highlight) */
 body.dark-mode #shareScoreBtn:hover,
@@ -893,7 +1031,13 @@ body.dark-mode #shareScoreBtn:hover,
 
 
 
+
+
+
+
+
 @media screen and (max-width: 600px) {
+
 
   /* 1. Container centered with tight side padding */
   #diceContainer {
@@ -903,10 +1047,12 @@ body.dark-mode #shareScoreBtn:hover,
     width: 100% !important;
     max-width: 100vw !important;
     gap: 8px !important;
-    padding: 0 8px !important; 
+    padding: 0 8px !important;
     box-sizing: border-box !important;
     margin: 15px 0 !important;
   }
+
+
 
 
   /* 2. Shrink top right icons (Rules, Infinite, Theme) */
@@ -916,10 +1062,13 @@ body.dark-mode #shareScoreBtn:hover,
     padding: 2px !important;
   }
 
+
   .header-controls .theme-icon {
     width: 18px !important;  /* Inner SVG icons size */
     height: 18px !important;
   }
+
+
 
 
 /* Pull everything directly underneath the header/title up */
@@ -928,22 +1077,24 @@ body.dark-mode #shareScoreBtn:hover,
     padding-bottom: 0 !important;
   }
 
+
   /* 2. Scaled up outer card wrappers */
   .die {
-    width: 17.5vw !important; 
+    width: 17.5vw !important;
     height: 17.5vw !important;
-    max-width: 68px !important; 
+    max-width: 68px !important;
     max-height: 68px !important;
     aspect-ratio: 1 / 1 !important;
-    
-    padding: 7px !important;   
+   
+    padding: 7px !important;  
     box-sizing: border-box !important;
-    
+   
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     flex-shrink: 0 !important;
   }
+
 
   /* 3. Inner SVG Die */
   .die-svg {
@@ -955,4 +1106,157 @@ body.dark-mode #shareScoreBtn:hover,
     display: block !important;
   }
 
+
+}
+
+
+/* COMPACT RULES MODAL */
+.modal-content {
+  max-width: 480px; 
+  width: 90%;
+  padding: 18px 22px;
+  font-size: 0.82rem;
+  box-sizing: border-box;
+}
+
+.modal-content h2 {
+  font-size: 1.25rem;
+  margin: 0 0 8px 0;
+}
+
+.modal-content h3 {
+  font-size: 0.95rem;
+  margin: 12px 0 8px 0;
+}
+
+.modal-content p {
+  margin: 0 0 6px 0;
+  line-height: 1.35;
+  color: #444444;
+}
+
+/*  2-Column Grid */
+.scoring-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 8px 12px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  list-style: none; 
+  text-align: left;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+.scoring-list li {
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.rules-tip {
+  font-size: 0.74rem;
+  opacity: 0.8;
+  margin-top: 8px !important;
+  margin-bottom: 0 !important;
+}
+
+/* Dark Mode Support */
+body.dark-mode .modal-content p {
+  color: #cccccc;
+}
+
+body.dark-mode .scoring-list {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.dark-mode .scoring-list li {
+  color: #e0e0e0;
+}
+
+/* MOBILE-FRIENDLY MODAL SCROLLING & BASE STYLES */
+.modal {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 18px 20px;
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* MOBILE ONLY: Fit entire modal on screen without scrolling + Keep 2-Column Grid */
+@media screen and (max-width: 600px) {
+  .modal {
+    align-items: center !important;
+    padding: 8px !important;
+  }
+
+  .modal-content {
+    /* Set wider base width before scaling */
+    width: 95% !important;
+    max-width: 440px !important;
+    
+    /* Proportionally shrink so the wide modal fits inside phone height */
+    transform: scale(0.85);
+    transform-origin: center center;
+    
+    padding: 16px 18px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .modal-content h2 {
+    font-size: 1.15rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .modal-content h3 {
+    font-size: 0.88rem !important;
+    margin: 8px 0 4px 0 !important;
+  }
+
+  /* Force 2-column grid layout on mobile */
+  .scoring-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px 10px !important;
+    padding: 8px 10px !important;
+    text-align: left !important;
+    margin: 6px 0 !important;
+  }
+
+  .scoring-list li {
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .rules-tip {
+    font-size: 0.68rem !important;
+  }
+}
+
+/* Extra tight screens (e.g., iPhone SE) */
+@media screen and (max-width: 380px) {
+  .modal-content {
+    transform: scale(0.75) !important;
+  }
 }
