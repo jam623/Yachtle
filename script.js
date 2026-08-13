@@ -29,18 +29,18 @@ diceFaces.forEach(src => {
 const placeholderDice = "assets/dice-placeholder.svg";
 
 const categories = [
-   { name: "Ones", weight: 10 },
+   { name: "Ones", weight: 8 },
    { name: "Twos", weight: 10 },
    { name: "Threes", weight: 10 },
    { name: "Fours", weight: 10 },
    { name: "Fives", weight: 10 },
    { name: "Sixes", weight: 10 },
    { name: "Chance", weight: 10 },
-   { name: "Three of a Kind", weight: 10 },
-   { name: "Four of a Kind", weight: 6 },
-   { name: "Full House", weight: 8 },
+   { name: "Three of a Kind", weight: 8 },
+   { name: "Four of a Kind", weight: 5 },
+   { name: "Full House", weight: 7 },
    { name: "Small Straight", weight: 8 },
-   { name: "Large Straight", weight: 6 },
+   { name: "Large Straight", weight: 5 },
    { name: "Yacht", weight: 2 }
 ];
 
@@ -145,7 +145,7 @@ function generateDailyChallenge() {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.30);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.27);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
@@ -650,7 +650,7 @@ function generateInfiniteChallenge() {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.30);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.27);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
@@ -1008,7 +1008,7 @@ function generateBalancedTargetScore(scorecardRows) {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.30);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.27);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
