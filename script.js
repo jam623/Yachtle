@@ -140,7 +140,7 @@ function generateDailyChallenge() {
         });
     }
 
-    // --- OG GAME BALANCE MATH ---
+    // --- OG GAME BALANCE MATH .30 is now .27 ---
     let selectedCategories = scorecard.map(row => row.category);
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
