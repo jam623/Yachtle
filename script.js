@@ -36,11 +36,11 @@ const categories = [
    { name: "Fives", weight: 10 },
    { name: "Sixes", weight: 10 },
    { name: "Chance", weight: 10 },
-   { name: "Three of a Kind", weight: 8 },
-   { name: "Four of a Kind", weight: 5 },
-   { name: "Full House", weight: 7 },
+   { name: "Three of a Kind", weight: 10 },
+   { name: "Four of a Kind", weight: 6 },
+   { name: "Full House", weight: 8 },
    { name: "Small Straight", weight: 8 },
-   { name: "Large Straight", weight: 5 },
+   { name: "Large Straight", weight: 6 },
    { name: "Yacht", weight: 2 }
 ];
 
@@ -140,12 +140,12 @@ function generateDailyChallenge() {
         });
     }
 
-    // --- OG GAME BALANCE MATH .30 is now .27 ---
+    // --- OG GAME BALANCE MATH  ---
     let selectedCategories = scorecard.map(row => row.category);
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.27);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.3);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
@@ -650,7 +650,7 @@ function generateInfiniteChallenge() {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.27);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.3);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
@@ -1008,7 +1008,7 @@ function generateBalancedTargetScore(scorecardRows) {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.27);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.3);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
