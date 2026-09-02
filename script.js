@@ -145,7 +145,7 @@ function generateDailyChallenge() {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.3);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.33);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
@@ -650,7 +650,7 @@ function generateInfiniteChallenge() {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.3);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.33);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
@@ -1008,7 +1008,7 @@ function generateBalancedTargetScore(scorecardRows) {
     let possibleScores = getPossibleTotalScores(selectedCategories).filter(score => score > 0);
 
     let highestPossible = Math.max(...possibleScores);
-    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.3);
+    possibleScores = possibleScores.filter(score => score >= highestPossible * 0.33);
     possibleScores.sort((a, b) => a - b);
 
     let weightedScores = [];
